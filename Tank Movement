@@ -1,0 +1,69 @@
+void main()
+{
+	// Create a 3D engine (using TLX engine here) and open a window for it
+	I3DEngine* myEngine = New3DEngine( kTLX );
+	myEngine->StartWindowed();
+
+	// Add default folder for meshes and other media
+	myEngine->AddMediaFolder( "Media" );
+
+	/**** Set up your scene here ****/
+	ICamera* myCamera;
+
+	// create world
+	IMesh* mSkybox = myEngine->LoadMesh("Skybox.x");
+	IModel* skybox = mSkybox->CreateModel(0.0f, -700.0f, 0.0f);
+
+	IMesh* mGround = myEngine->LoadMesh("Floor.x");
+	IModel* ground = mGround->CreateModel(0.0f, 0.0f, 0.0f);
+	ground->SetSkin("Grass1.jpg");
+
+
+
+	// tanks
+	IMesh* mBossTank = myEngine->LoadMesh("HoverTank08.x");
+	IModel* bossTank = mBossTank->CreateModel(0.0f, 0.0f, 0.0f);
+	bossTank->Scale(8.0f);
+
+	// buildings
+	IMesh* mFactory = myEngine->LoadMesh("Building07.x");
+	IModel* factory = mFactory->CreateModel(150.0f, 0.0f, 100.0f);
+	factory->Scale(3.0f);
+
+	myCamera = myEngine->CreateCamera(kManual);
+	myCamera->RotateX(90.0f);
+	myCamera->Move(0.0f, 50.0f, 30.0f);
+	myCamera->AttachToParent(bossTank);
+
+	ISceneNode* gunNode1 = bossTank->GetNode(4);
+
+	// The main game loop, repeat until engine is stopped
+	while (myEngine->IsRunning())
+	{
+		// Draw the scene
+		myEngine->DrawScene();
+
+		if (myEngine->KeyHit(Key_Escape))
+		{
+			break;
+		}
+
+		if (myEngine->KeyHeld(Key_W))
+		{
+			bossTank->MoveLocalZ(0.01f);
+		}
+		if (myEngine->KeyHeld(Key_A))
+		{
+			bossTank->RotateLocalY(-0.01f);
+		}
+		if (myEngine->KeyHeld(Key_S))
+		{
+			bossTank->MoveLocalZ(-0.01f);
+		}
+		if (myEngine->KeyHeld(Key_D))
+		{
+			bossTank->RotateLocalY(0.01f);
+		}
+
+		gunNode1->RotateY(myEngine->GetMouseMovementX());
+	}

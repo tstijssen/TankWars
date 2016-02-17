@@ -1,0 +1,63 @@
+
+ifstream map;	// input file to be opened for the map
+	vector<IModel*> mapModels;
+
+	map.open("Industrial.txt");	// open this map to read and create the game world
+	bool mapSuccess;	// determines if the map was opened successfuly
+	if (!map)
+	{
+		mapSuccess = false;	// only try reading the map if it has opened successfully
+	}
+	else
+	{
+		mapSuccess = true;
+
+		int numOfModels;
+		string currrentModel;	// contains the current extracted word
+
+		while (!map.eof())
+		{
+			getline(map, currrentModel);	// get the line
+
+			if (currrentModel == "")
+			{
+				getline(map, currrentModel);
+			}
+
+			IMesh* tmp = myEngine->LoadMesh(currrentModel + ".x");
+			float coordinates[5];
+			map >> numOfModels;
+
+			char currentItem = ' ';
+			string createdWord;
+			int coordInt = 0;
+			
+			for (int i = 0; i < numOfModels; i++)
+			{	
+				createdWord.clear();
+				while (createdWord != currrentModel)
+				{
+					map >> currentItem;
+					if (currentItem == ',')
+					{
+						coordinates[coordInt] = stof(createdWord);
+						coordInt++;
+						createdWord.clear();
+					}
+					else
+					{
+						createdWord += currentItem;
+					}
+
+					if (coordInt == 5)
+					{
+						coordInt = 0;
+						IModel* newModel = tmp->CreateModel(coordinates[0], coordinates[1], coordinates[2]);
+						newModel->RotateLocalY(coordinates[3]);
+						newModel->Scale(coordinates[4]);
+						mapModels.push_back(newModel);
+					}
+				}
+			}
+		}
+	}

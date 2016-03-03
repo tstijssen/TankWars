@@ -92,10 +92,10 @@ void main( in PS_Input i, out PS_Output o )
 	float4 GlossColour = tex2D( Tex1, i.TexCoord0 );
 
 	o.Colour = DiffuseColour * TextureColour + SpecularColour * GlossColour;
-
-
-
 }
+
+
+
 
 // myOwn
 

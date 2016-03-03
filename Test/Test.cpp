@@ -29,21 +29,19 @@ void main()
 	planet->SetSkin("MoonHi.jpg");
 	planet->Scale(10);
 
-	
-
 
 	float matrix[16];
 
 	vector<IModel*> mapModels;
 
-	cTank* player = new cTank(tankMesh, 1, myCamera);
+	cTank* player = new cTank(tankMesh, 1, myCamera, myEngine);
 
 	string industMap = "Industrial.txt";
 
 	LoadMap(myEngine, mapModels, industMap);
 
-	myCamera->Move(0.0f, 20.0f, 10.0f);
-	myCamera->RotateX(50.0f);
+	myCamera->Move(0.0f, 40.0f, 10.0f);
+	myCamera->RotateX(60.0f);
 
 
 
@@ -58,13 +56,32 @@ void main()
 		/**** Update your scene each frame here ****/
 		frameTime = myEngine->Timer();
 
-		player->mRotateTurret(myEngine->GetMouseMovementX() * 20, frameTime);
+		player->mRotateTurret(myEngine->GetMouseMovementX() * 20.0f, myEngine->GetMouseMovementY() * 20.0f, frameTime);
 
-		planet->GetMatrix(matrix);
-		matrix[3] = myCamera->GetX();
-		matrix[7] = myCamera->GetY();
-		matrix[11] = myCamera->GetZ();
-		planet->SetMatrix(matrix);
+		//planet->GetMatrix(matrix);
+		//matrix[3] = myCamera->GetX();
+		//matrix[7] = myCamera->GetY();
+		//matrix[11] = myCamera->GetZ();
+		//planet->SetMatrix(matrix);
+
+		if (myEngine->KeyHit(Mouse_LButton))
+		{
+			player->mShoot(frameTime);
+		}
+
+		player->mUpdate(frameTime);
+
+		// collision (PUT IN SEPERATE CPP)
+		for (auto it = mapModels.begin(); it != mapModels.end() - 1; it++)
+		{
+			player->mCollision((*it));
+		}
+
+		if (myEngine->KeyHeld(Key_R))
+		{
+			planet->RotateX(0.05f);
+			planet->RotateY(0.05f);
+		}
 
 		if (myEngine->KeyHeld(Key_Space))
 		{
@@ -93,6 +110,12 @@ void main()
 		{
 			player->mStopEngine();
 		}
+
+		if (myEngine->KeyHit(Key_Escape))
+		{
+			myEngine->Stop();
+		}
+
 	}
 
 	// Delete the 3D engine now we are finished with it

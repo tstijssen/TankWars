@@ -24,4 +24,11 @@ void main( in PS_Input i, out PS_Output o )
 {
 //    o.Colour = float4( i.Colour1, 1.0f ) * tex2D( Tex0, i.TexCoord0 ) + float4( i.Colour2, 1.0f );
     o.Colour = float4( i.Colour1, 1.0f ) * tex2D( Tex0, i.TexCoord0 );
+
+	//// Assume specular material colour is white (i.e. highlights are a full, untinted reflection of light)
+	//float3 TexColour = DiffuseTex.Sample(Trilinear, i.TexCoord0);
+
+	//float4 combinedColour = i.Colour1 * (float4(TexColour, 1.0f));
+
+	//o.Colour = combinedColour;
 }

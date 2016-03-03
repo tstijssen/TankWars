@@ -2,6 +2,7 @@
 #define Tanks
 
 #include "TL-Engine.h"
+#include <vector>
 #include "Sound.h"
 using namespace tle;
 
@@ -11,6 +12,13 @@ class cTank
 {
 	IModel* mTankModel;
 	ISceneNode* mTurret;
+	IModel* mDummy;
+
+	IMesh* mProjectileMesh;
+
+	vector<IModel*> vProjectiles;
+
+	float mRotationValue;
 	int mTeamNumber;
 	float mSpeed = 20.0f;
 	tmpPowerUps powerUps[3];
@@ -20,11 +28,14 @@ class cTank
 	cSoundTank* tankSounds;
 public:
 
-	cTank(IMesh* tankMesh, int teamNumber, ICamera* camera);
+	cTank(IMesh* tankMesh, int teamNumber, ICamera* camera, I3DEngine* engine);
 	void mMove(float movement, float rotation, float frameTime);
-	void mRotateTurret(float rotation, float frameTime);
+	void mRotateTurret(float rotation, float, float frameTime);
 	void mStopEngine();
 	void mBoostMove(float frameTime);
+	void mUpdate(float);
+	void mShoot(float);
+	void mCollision(IModel*);
 	void mDestroy();
 	int mGetTeam();
 };

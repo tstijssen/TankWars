@@ -36,7 +36,7 @@ struct VS_Output
 // Main vertex shader function
 void main( in VS_Input i, out VS_Output o ) 
 {
-	const float3 AmbientColour = { 0.3f, 0.3f, 0.3f };
+	const float3 AmbientColour = { 1.0f, 1.0f, 1.0f };
 	const float3 LightColour = { 1.0f, 1.0f, 1.0f };
 	const float3 DirToLight = { 0.408, 0.408, -0.816 };
 //	const float SpecularPower = 30.0f;

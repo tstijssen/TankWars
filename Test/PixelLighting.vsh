@@ -62,11 +62,14 @@ void main( in VS_Input i, out VS_Output o )
     o.WorldPosition = WorldPosition;
 
     // Transform model normal to world space and pass to the pixel shader
-    o.Normal = mul( i.Normal, (float3x3)WorldMatrix );
+    o.Normal = mul( (float3x3)WorldNormal, (float3x3)WorldMatrix );
     
     // Pass texture coordinates directly to pixel shader
     o.TexCoord0 = i.TexCoord0;
 }
+
+
+
 
 // myOwn
 

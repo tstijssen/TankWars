@@ -99,6 +99,30 @@ void ReadControls(ifstream &infile, string &controlFile, string &defaultControlF
 	infile.close();
 }
 
+
+void SavePlayerControls(ofstream &outfile, string playerControls, gameControls gameControl[], textData controlText[], unordered_map <int, string> &keyOutput, int numControls, int tempKeyBindValue)
+{
+	outfile.open(playerControls, ios::out);
+	if (outfile)
+	{
+		for (int i = 0; i < numControls; i++)
+		{
+			outfile << gameControl[i].control << " " << gameControl[i].keyBindNumber;
+			//This is used to prevent a new line being added to the file after the last control has been written to the file.
+			//Without this line reading in the file will not work correctly. 
+			if (i < numControls - 1)
+			{
+				outfile << '\n';
+			}
+		}
+	}
+	outfile.close();
+
+
+}
+
+
+
 void SetKeyCheckMap(unordered_map <int, string> &keyOutput)
 {
 	keyOutput[0] = "Not in use";
@@ -440,6 +464,8 @@ void cGameFront::mControls()
 					if (controlText[i].keyPress)
 					{
 						ChangeKeyBind(controlText[i], changeKeyMenu, mFrontEngine, tempKeyBindValue, it, gameControl[i]);
+						gameControl[i].keyBindNumber = tempKeyBindValue;
+						SavePlayerControls(outfile, controlFile, gameControl, controlText, keyOutput, numControls, tempKeyBindValue);
 					}
 				}
 			}

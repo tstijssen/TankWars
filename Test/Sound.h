@@ -6,6 +6,16 @@
 
 using namespace sf;
 
+//class cMusic
+//{
+//	SoundBuffer buffer;
+//	Sound sound;
+//public:
+//	cMusic(String musicFile);
+//	void mStart();
+//	void mStop();
+//};
+
 class cSoundTank
 {
 	SoundBuffer engine;

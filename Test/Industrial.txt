@@ -12,10 +12,6 @@ TransitVan
 -61.0,0.0,72.0,0.0,1.0,TransitVan
 -84.0,0.0,72.0,0.0,1.0,TransitVan
 -89.0,0.0,72.0,0.0,1.0,TransitVan
-challenger
-0
-apache
-0
 Building09
 2
 -61.0,0.0,8.0,0.0,0.3,Building09
@@ -32,15 +28,6 @@ Building07
 2
 94.0,0.0,-7.0,270.0,0.3,Building07
 -17.0,0.0,-78.0,0.0,0.3,Building07
-pipe_wall
-0
-sign01
-0
-ind4_hall5
-3
--62.0,0.0,-57.0,0.0,1.0,ind4_hall5
-126.0,0.0,-68.0,0.0,1.0,ind4_hall5
-121.0,0.0,-68.0,0.0,1.0,ind4_hall5
 ChainLinkFence
 260
 39.0,0.0,89.0,180.0,1.1,ChainLinkFence

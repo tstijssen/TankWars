@@ -1,9 +1,9 @@
 #ifndef MapLoader
 #define MapLoader
 #include <TL-Engine.h>	// TL-Engine include file and namespace
-#include <vector>
+#include "TypeDefs.h"
 using namespace tle;
 
-void LoadMap(I3DEngine* myEngine, vector<IModel*>& mapModels, string mapName);
+void LoadMap(I3DEngine* myEngine, model_Vector& mapModels, string mapName);
 
 #endif

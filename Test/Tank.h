@@ -14,21 +14,25 @@ class cTank
 	ISceneNode* mTurret;
 	IModel* mDummy;
 
+	IModel* mFrontNode;
+	IModel* mBackNode;
+
 	IMesh* mProjectileMesh;
 
 	vector<IModel*> vProjectiles;
 
 	float mRotationValue;
 	int mTeamNumber;
-	float mSpeed = 20.0f;
+	float mMovement = 0.0f;
+	float mPrevX = 0.0f;
+	float mPrevZ = 0.0f;
+
+	float mSpeed = 1000.0f;
 	tmpPowerUps powerUps[3];
-	// model get matrix
-	// set values I want
-	// will be reset after lighting
 	cSoundTank* tankSounds;
 public:
 
-	cTank(IMesh* tankMesh, int teamNumber, ICamera* camera, I3DEngine* engine);
+	cTank(IMesh* tankMesh, I3DEngine* engine);
 	void mMove(float movement, float rotation, float frameTime);
 	void mRotateTurret(float rotation, float, float frameTime);
 	void mStopEngine();
@@ -37,6 +41,7 @@ public:
 	void mShoot(float);
 	void mCollision(IModel*);
 	void mDestroy();
+	IModel* mGetModel();
 	int mGetTeam();
 };
 
@@ -51,14 +56,6 @@ public:
 };
 
 class cNPC: public cTank
-{
-public:
-
-private:
-
-};
-
-class cPlayer: public cTank
 {
 public:
 

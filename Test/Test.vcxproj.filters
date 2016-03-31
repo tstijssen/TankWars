@@ -24,6 +24,15 @@
     <ClCompile Include="Sound.cpp">
       <Filter>SourceFiles</Filter>
     </ClCompile>
+    <ClCompile Include="FrontEnd.cpp">
+      <Filter>SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInstance.cpp">
+      <Filter>SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>SourceFiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapLoader.h">
@@ -33,6 +42,18 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontEnd.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeDefs.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInstance.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

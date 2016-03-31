@@ -9,7 +9,7 @@ sampler2D Tex0;
 struct PS_Input
 {
 	float3 Colour1 : COLOR0;
-//	float3 Colour2 : COLOR1;
+	float3 Colour2 : COLOR1;
 	float2 TexCoord0 : TEXCOORD0;
 };
 
@@ -22,13 +22,5 @@ struct PS_Output
 // Main pixel shader function
 void main( in PS_Input i, out PS_Output o ) 
 {
-//    o.Colour = float4( i.Colour1, 1.0f ) * tex2D( Tex0, i.TexCoord0 ) + float4( i.Colour2, 1.0f );
-    o.Colour = float4( i.Colour1, 1.0f ) * tex2D( Tex0, i.TexCoord0 );
-
-	//// Assume specular material colour is white (i.e. highlights are a full, untinted reflection of light)
-	//float3 TexColour = DiffuseTex.Sample(Trilinear, i.TexCoord0);
-
-	//float4 combinedColour = i.Colour1 * (float4(TexColour, 1.0f));
-
-	//o.Colour = combinedColour;
+	o.Colour = float4( i.Colour1, 1.0f ) * tex2D( Tex0, i.TexCoord0 ) + float4( i.Colour2, 0.0f );
 }

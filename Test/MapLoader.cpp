@@ -1,7 +1,7 @@
 #include <fstream>		// used to read the game map from a text file
 #include "MapLoader.h"
 
-void LoadMap(I3DEngine* myEngine, vector<IModel*>& mapModels, string mapName)
+void LoadMap(I3DEngine* myEngine, model_Vector& mapModels, string mapName)
 {
 	ifstream map;	// input file to be opened for the map
 	map.open(mapName);	// open this map to read and create the game world
@@ -58,6 +58,11 @@ void LoadMap(I3DEngine* myEngine, vector<IModel*>& mapModels, string mapName)
 						IModel* newModel = tmp->CreateModel(coordinates[0], coordinates[1], coordinates[2]);	// create
 						newModel->RotateLocalY(coordinates[3]);
 						newModel->Scale(coordinates[4]);
+
+
+
+
+
 						mapModels.push_back(newModel);	// add model to world models vector
 					}
 				}

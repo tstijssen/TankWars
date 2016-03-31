@@ -52,6 +52,7 @@ class cGameFront
 	unordered_map <int, string> keyOutput;
 	gameControls gameControl[5];
 	ifstream infile;
+	ofstream outfile;
 	string controlFile = "controls.txt";
 	string defaultControls = "defaultcontrols.txt";
 	int tempNumber;

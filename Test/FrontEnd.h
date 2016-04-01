@@ -3,7 +3,6 @@
 
 #include "TypeDefs.h"
 #include "Sound.h"
-
 #include <TL-Engine.h>// TL-Engine include file and namespace
 #include <sstream>
 #include <iostream>
@@ -16,19 +15,13 @@
 
 using namespace tle;
 
+const int NUMCONTROLS = 5;
+
 struct optionMenuText
 {
 	stringstream text;
 	int colour = kRed;
 };
-
-
-struct gameControls
-{
-	string control;
-	EKeyCode keyBind; //const EKeyCode KEY_LEFT = tle::Key_Left;
-};
-
 
 struct textData
 {
@@ -45,8 +38,12 @@ class cGameFront
 	ICamera* mMenuCamera;
 	I3DEngine* mFrontEngine;
 	IModel* mBackground;
+	ISprite* mMenuPanel;
+
 	model_Vector mSceneModels;
-//	cMusic* mSceneMusic;
+	cMusic* mSceneMusic;
+	cSoundEffect* mButtonPress;
+	cSoundEffect* mButtonHover;
 
 	unordered_map <int, string> keyOutput;
 	gameControls gameControl[5];
@@ -56,7 +53,7 @@ class cGameFront
 	int tempNumber;
 	string tempString;
 	int controlCounter = 0;
-
+	textData controlText[NUMCONTROLS];
 
 	IFont* mMenuFont;
 

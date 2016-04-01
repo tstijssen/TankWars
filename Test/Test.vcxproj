@@ -130,6 +130,7 @@ copy "C:\ProgramData\TL-Engine\3rd Party\TL-Xtreme\shader\*.*" "$(OutDir)" &gt; 
     <ClCompile Include="FrontEnd.cpp" />
     <ClCompile Include="GameInstance.cpp" />
     <ClCompile Include="MapLoader.cpp" />
+    <ClCompile Include="NPCActor.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Tank.cpp" />
@@ -142,6 +143,7 @@ copy "C:\ProgramData\TL-Engine\3rd Party\TL-Xtreme\shader\*.*" "$(OutDir)" &gt; 
     <ClInclude Include="FrontEnd.h" />
     <ClInclude Include="GameInstance.h" />
     <ClInclude Include="MapLoader.h" />
+    <ClInclude Include="NPCActor.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Tank.h" />

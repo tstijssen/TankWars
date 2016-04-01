@@ -11,17 +11,17 @@ class cPlayer
 	int mScore;
 	int mTeamNumber;
 	bool mActive;
-	cTank* mPlayerTank;
 
+	ITank* mPlayerTank;
 public:
-
 	cPlayer();
 	~cPlayer();
 
 	void mSetTank(IMesh* newTank, I3DEngine* engine);
 	bool mIsActive();
 	void mSetInactive();
-	void mControlTank(I3DEngine* engine, float frameTime, model_Vector& mapModels);
+	ITank* mGetTank();
+	void mControlTank(I3DEngine* engine, float frameTime, gameControls[5]);
 	void mAttachCamera(ICamera* camera);
 };
 

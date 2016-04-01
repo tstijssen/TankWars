@@ -2,19 +2,27 @@
 #define SoundHeader
 
 #include <SFML/Audio.hpp>
-#include <vector>
 
 using namespace sf;
 
-//class cMusic
-//{
-//	SoundBuffer buffer;
-//	Sound sound;
-//public:
-//	cMusic(String musicFile);
-//	void mStart();
-//	void mStop();
-//};
+class cMusic
+{
+	SoundBuffer buffer;
+	Sound sound;
+public:
+	cMusic(std::string musicFile);
+	void mStart();
+	void mStop();
+};
+
+class cSoundEffect
+{
+	SoundBuffer buffer;
+	Sound sound;
+public:
+	cSoundEffect(std::string musicFile);
+	void mPlay();
+};
 
 class cSoundTank
 {

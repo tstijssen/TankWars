@@ -452,6 +452,7 @@ void cGameFront::mControls()
 			//Checking contact with cancel button if player selects a key that they don't want to change or they change their mind about changing a key. 
 		if (CheckButtonContact(mouseXPosition, mouseYPosition, cancelKeyChange, textWidth, optionMenuTextOffsetX, optionMenuTextOffsetY))
 				{
+					mButtonPress->mPlay();
 					cancelKeyChange.textColour = kWhite;
 					if (myEngine->KeyHeld(Mouse_LButton))
 					{

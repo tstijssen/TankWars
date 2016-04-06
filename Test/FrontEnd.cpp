@@ -11,6 +11,9 @@ const int MAINMENUTEXTOFFSETY = 12;//Every piece of text drawn using this font a
 const int OPTIONMENUTEXTOFFSETX = 2;
 const int OPTIONMENUTEXTOFFSETY = 10;
 
+
+const unsigned int DEFAULTTEXTCOLOUR = kRed;
+
 // Return a random number in the range between rangeMin and rangeMax inclusive
 // range_min <= random number <= range_max
 float random(int rangeMin, int rangeMax)
@@ -212,9 +215,12 @@ void SetKeyCheckMap(unordered_map <int, string> &keyOutput)
 
 cGameFront::cGameFront(I3DEngine* engine)
 {
-	//// set up menu music
-	//mSceneMusic = new cMusic("menu.wav");
-	//mSceneMusic->mStart();
+	// set up menu music
+	mSceneMusic = new cMusic("MenuBattle.wav");
+	mSceneMusic->mStart();
+
+	// set up button sounds
+	mButtonPress = new cSoundEffect("ButtonPress.wav");
 
 	// set up menu scene
 	mFrontEngine = engine;
@@ -235,8 +241,8 @@ cGameFront::~cGameFront()
 	// unallocate pointers and stop music
 	delete mMenuCamera;
 	mFrontEngine->Delete();
-	//mSceneMusic->mStop();
-	//delete mSceneMusic;
+	mSceneMusic->mStop();
+	delete mSceneMusic;
 }
 
 void cGameFront::mMenu()
@@ -246,25 +252,40 @@ void cGameFront::mMenu()
 	int mouseYPosition;
 	int textWidth;//Variable used in determining the toggle range of buttons/onscreen text.
 
+	// MENUSPRITES
+	mMenuPanel = mFrontEngine->CreateSprite("Panel-2.png");
+	mMenuPanel->SetPosition((windowWidth / 2) - 150, 30);
+
+	//textData controlText[NUMCONTROLS];
+
+	ReadControls(infile, controlFile, defaultControls, gameControl, controlText, keyOutput);
+
 	// TEXT VALUES
 	textData mainMenuText[3];
+	cSoundEffect* mainMenuHovers[3];
 	//Play button
 	mainMenuText[0].text << "Play";
-	mainMenuText[0].xPos = windowWidth / 2;;
+	mainMenuText[0].xPos = windowWidth / 2;
 	mainMenuText[0].yPos = 100;
+	mainMenuHovers[0] = new cSoundEffect("ButtonHover.wav");
 	//Option button
 	mainMenuText[1].text << "Options";
-	mainMenuText[1].xPos = windowWidth / 2;;
+	mainMenuText[1].xPos = windowWidth / 2;
 	mainMenuText[1].yPos = 200;
+	mainMenuHovers[1] = new cSoundEffect("ButtonHover.wav");
 	//Quit button
 	mainMenuText[2].text << "Quit";
-	mainMenuText[2].xPos = windowWidth / 2;;
+	mainMenuText[2].xPos = windowWidth / 2;
 	mainMenuText[2].yPos = 300;
+	mainMenuHovers[2] = new cSoundEffect("ButtonHover.wav");
+
+	float frameTime;
 
 	while (mFrontEngine->IsRunning())
 	{
 		mFrontEngine->DrawScene();
-
+		frameTime = mFrontEngine->Timer();
+		mMenuCamera->RotateY(0.5f * frameTime);
 		mouseXPosition = mFrontEngine->GetMouseX();
 		mouseYPosition = mFrontEngine->GetMouseY();
 
@@ -275,18 +296,26 @@ void cGameFront::mMenu()
 			mMenuFont->Draw(mainMenuText[i].text.str(), mainMenuText[i].xPos, mainMenuText[i].yPos, mainMenuText[i].textColour, kLeft, kVCentre);
 		}
 		for (int i = 0; i<3; ++i)
-		{
+		{				
+
 			textWidth = mMenuFont->MeasureTextWidth(mainMenuText[i].text.str());
 			if (CheckButtonContact(mouseXPosition, mouseYPosition, mainMenuText[i], textWidth, MAINMENUTEXTOFFSETX, MAINMENUTEXTOFFSETY))
 			{
-				mainMenuText[i].textColour = kWhite;
+				if (!mainMenuHovers[i]->mGetStatus())
+				{
+					mainMenuHovers[i]->mPlay();
+					mainMenuHovers[i]->mSetStatus(true);
+				}
+				mainMenuText[i].textColour = kWhite;	// change text colour when mouse over
 				if (mFrontEngine->KeyHeld(Mouse_LButton))
 				{
+					mButtonPress->mPlay();
 					mainMenuText[i].keyPress = true;
 				}
 			}
 			else
 			{
+				mainMenuHovers[i]->mSetStatus(false);
 				mainMenuText[i].textColour = kRed;
 			}
 		}
@@ -323,37 +352,26 @@ void cGameFront::mControls()
 	backText.text << "Back";
 	backText.xPos = windowWidth / 2;
 	backText.yPos = 500;
+	cSoundEffect* backButtonHover = new cSoundEffect("ButtonHover.wav");
 
 	textData changeKeyText;
-
 	changeKeyText.text << "Please enter a new key bind.";
-
 	changeKeyText.xPos = 600;
-
 	changeKeyText.yPos = 50;
 
 	textData cancelKeyChange;
-
 	cancelKeyChange.text << "Cancel";
-
 	cancelKeyChange.xPos = 1000;
-
 	cancelKeyChange.yPos = 50;
 
-
-	const int numControls = 5;
-	const unsigned int defaultTextcolour = kRed;
 	string newKeyChar;
-	textData controlText[numControls];
-
-	ReadControls(infile, controlFile, defaultControls, gameControl, controlText, keyOutput);
 
 	//X Positions
-	controlText[0].xPos = windowWidth / 2;;
-	controlText[1].xPos = windowWidth / 2;;
-	controlText[2].xPos = windowWidth / 2;;
-	controlText[3].xPos = windowWidth / 2;;
-	controlText[4].xPos = windowWidth / 2;;
+	controlText[0].xPos = windowWidth / 2;
+	controlText[1].xPos = windowWidth / 2;
+	controlText[2].xPos = windowWidth / 2;
+	controlText[3].xPos = windowWidth / 2;
+	controlText[4].xPos = windowWidth / 2;
 	//Y Positions
 	controlText[0].yPos = 100;
 	controlText[1].yPos = 120;
@@ -361,15 +379,20 @@ void cGameFront::mControls()
 	controlText[3].yPos = 160;
 	controlText[4].yPos = 180;
 
+	float frameTime;
+
 	while (mFrontEngine->IsRunning())
 	{
 		mFrontEngine->DrawScene();
+
+		frameTime = mFrontEngine->Timer();
+		mMenuCamera->RotateY(0.5f * frameTime);
 
 		mouseXPosition = mFrontEngine->GetMouseX();
 		mouseYPosition = mFrontEngine->GetMouseY();
 
 		//For loop used to draw text. Cleaner than multiple Draw statements.
-		for (int i = 0; i < numControls; ++i)
+		for (int i = 0; i < NUMCONTROLS; ++i)
 		{
 			DrawShadow(controlText[i], mMenuFont);
 			mMenuFont->Draw(controlText[i].text.str(), controlText[i].xPos, controlText[i].yPos, controlText[i].textColour, kLeft, kVCentre);
@@ -381,18 +404,25 @@ void cGameFront::mControls()
 		textWidth = mMenuFont->MeasureTextWidth(backText.text.str());
 		if (CheckButtonContact(mouseXPosition, mouseYPosition, backText, textWidth, OPTIONMENUTEXTOFFSETX, OPTIONMENUTEXTOFFSETY))
 		{
+			if (!backButtonHover->mGetStatus())
+			{
+				backButtonHover->mPlay();
+				backButtonHover->mSetStatus(true);
+			}
 			backText.textColour = kWhite;
 			if (mFrontEngine->KeyHeld(Mouse_LButton))
 			{
+				mButtonPress->mPlay();
 				changeKeyMenu = false;
 				return;
 			}
 		}
 		else
 		{
-			backText.textColour = defaultTextcolour;
+			backButtonHover->mSetStatus(false);
+			backText.textColour = DEFAULTTEXTCOLOUR;
 		}
-		for (int i = 0; i<numControls; ++i)
+		for (int i = 0; i<NUMCONTROLS; ++i)
 		{
 			textWidth = mMenuFont->MeasureTextWidth(controlText[i].text.str());
 			if (CheckButtonContact(mouseXPosition, mouseYPosition, controlText[i], textWidth, OPTIONMENUTEXTOFFSETX, OPTIONMENUTEXTOFFSETY) && changeKeyMenu == false)
@@ -400,13 +430,14 @@ void cGameFront::mControls()
 				controlText[i].textColour = kWhite;
 				if (mFrontEngine->KeyHeld(Mouse_LButton))
 				{
+					mButtonPress->mPlay();
 					controlText[i].keyPress = true;
 					changeKeyMenu = true;
 				}
 			}
 			else
 			{
-				controlText[i].textColour = defaultTextcolour;
+				controlText[i].textColour = DEFAULTTEXTCOLOUR;
 			}
 		}
 		//CHANGING KEY BINDS!!
@@ -423,19 +454,20 @@ void cGameFront::mControls()
 				cancelKeyChange.textColour = kWhite;
 				if (mFrontEngine->KeyHeld(Mouse_LButton))
 				{
+					mButtonPress->mPlay();
 					changeKeyMenu = false;
 				}
 			}
 			else
 			{
-				cancelKeyChange.textColour = defaultTextcolour;
+				cancelKeyChange.textColour = DEFAULTTEXTCOLOUR;
 			}
 
 			int tempKeyBindValue;
 			for (unordered_map<int, string>::iterator it = keyOutput.begin(); it != keyOutput.end(); ++it)
 			{
 				tempKeyBindValue = it->first;//The iterator moves through the list and the int value is stored.
-				for (int i = 0; i < numControls; ++i)
+				for (int i = 0; i < NUMCONTROLS; ++i)
 				{
 					if (controlText[i].keyPress)
 					{
@@ -449,5 +481,9 @@ void cGameFront::mControls()
 
 void cGameFront::mShowMaps()
 {
-	cGameInstance* newGame = new cGameInstance(mFrontEngine, "Industrial.txt");
+	delete mSceneMusic;
+	delete mButtonPress;
+	mMenuPanel->~ISprite();
+
+	cGameInstance* newGame = new cGameInstance(mFrontEngine, "EmptySquare.txt", gameControl);
 }

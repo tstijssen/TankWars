@@ -13,7 +13,7 @@ void main()
 	// Create a 3D engine (using TLX engine here) and open a window for it
 	I3DEngine* myEngine = New3DEngine(kTLX);
 	
-	myEngine->StartWindowed(1920, 1080);
+	myEngine->StartWindowed(1600, 900);
 
 	myEngine->SetWindowCaption("TankWars");
 

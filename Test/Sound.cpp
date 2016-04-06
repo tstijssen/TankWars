@@ -1,23 +1,54 @@
 #include "Sound.h"
 
-//cMusic::cMusic(String musicFile)
-//{
-//	//buffer.loadFromFile(musicFile);
-//	//sound.setBuffer(buffer);
-//	//sound.setVolume(100.0f);
-//	//sf::Listener::setGlobalVolume(100.0f); // 0 to 100
-//	//sound.setLoop(true);
-//}
-//
-//void cMusic::mStart()
-//{
-//	sound.play();
-//}
-//
-//void cMusic::mStop()
-//{
-//	sound.stop();
-//}
+cMusic::cMusic(std::string musicFile)
+{
+	buffer.loadFromFile("Music\\" + musicFile);
+	sound.setBuffer(buffer);
+	sound.setVolume(100.0f);
+	sf::Listener::setGlobalVolume(100.0f); // 0 to 100
+	sound.setLoop(true);
+}
+
+void cMusic::mStart()
+{
+	sound.play();
+}
+
+void cMusic::mStop()
+{
+	sound.stop();
+}
+
+// sound effect class
+
+cSoundEffect::cSoundEffect(std::string musicFile)
+{
+	buffer.loadFromFile("Music\\Effects\\" + musicFile);
+	sound.setBuffer(buffer);
+	sound.setVolume(100.0f);
+	sf::Listener::setGlobalVolume(100.0f);
+	sound.setLoop(false);
+}
+
+void cSoundEffect::mPlay()
+{
+	if (sound.getStatus() != sound.Playing)
+	{
+		sound.play();
+	}
+}
+
+bool cSoundEffect::mGetStatus()
+{
+	return mSoundStatus;
+}
+
+void cSoundEffect::mSetStatus(bool newStatus)
+{
+	mSoundStatus = newStatus;
+}
+
+
 
 cSoundTank::cSoundTank()
 {

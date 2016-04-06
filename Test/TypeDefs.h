@@ -7,8 +7,10 @@
 struct gameControls
 {
 	string control;
-	tle::EKeyCode keyBind; //const EKeyCode KEY_LEFT = tle::Key_Left;
+	EKeyCode keyBind;
+	int keyBindNumber = 0;//This variable will be used to write to the control file. This number is casted to an EKeyCode to determine what key to use for each control/action.
 };
+
 
 class cNPCActor;
 

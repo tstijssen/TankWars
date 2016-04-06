@@ -41,7 +41,7 @@ bool CheckButtonContact(int mouseXPosition, int mouseYPosition, textData &text, 
 	return false;
 }
 //Function used to change the key bind assigned to a control.
-void ChangeKeyBind(textData &text, bool &changeKeyMenu, I3DEngine* &myEngine, int &tempKeyBindValue, unordered_map<int, string>::iterator it, gameControls &gameControl)
+void ChangeKeyBind(textData &text, bool &changeKeyMenu, I3DEngine* &myEngine, int &tempKeyBindValue, unordered_map<int, string>::iterator it, gameControls &gameControl, bool &keyChanged)
 {
 	//The iterator that is passed to the function moves through the map of key binds.
 	string newKeyChar;
@@ -58,6 +58,7 @@ void ChangeKeyBind(textData &text, bool &changeKeyMenu, I3DEngine* &myEngine, in
 			text.textColour = kWhite;
 			text.keyPress = false;
 			changeKeyMenu = false;
+			keyChanged = true;
 		}
 	}
 }
@@ -346,7 +347,7 @@ void cGameFront::mControls()
 	int mouseYPosition;
 	int textWidth;//Variable used in determining the toggle range of buttons/onscreen text.
 	bool changeKeyMenu = false;
-
+	bool keyChanged = false;
 	//Back button
 	textData backText;
 	backText.text << "Back";
@@ -449,32 +450,53 @@ void cGameFront::mControls()
 			mMenuFont->Draw(cancelKeyChange.text.str(), cancelKeyChange.xPos, cancelKeyChange.yPos, cancelKeyChange.textColour, kLeft, kVCentre);//Cancel button.
 			textWidth = mMenuFont->MeasureTextWidth(cancelKeyChange.text.str());
 			//Checking contact with cancel button if player selects a key that they don't want to change or they change their mind about changing a key. 
-			if (CheckButtonContact(mouseXPosition, mouseYPosition, cancelKeyChange, textWidth, OPTIONMENUTEXTOFFSETX, OPTIONMENUTEXTOFFSETY))
-			{
-				cancelKeyChange.textColour = kWhite;
-				if (mFrontEngine->KeyHeld(Mouse_LButton))
+		if (CheckButtonContact(mouseXPosition, mouseYPosition, cancelKeyChange, textWidth, optionMenuTextOffsetX, optionMenuTextOffsetY))
 				{
-					mButtonPress->mPlay();
-					changeKeyMenu = false;
+					cancelKeyChange.textColour = kWhite;
+					if (myEngine->KeyHeld(Mouse_LButton))
+					{
+						changeKeyMenu = false;
+						cancelKeyChange.textColour = DEFAULTTEXTCOLOUR;
+						//This will reset any control key that have been pressed to prevent random errors.
+						for (int i = 0; i < 5; i++)
+						{
+							if (controlText[i].keyPress)
+							{
+								controlText[i].keyPress = false;
+							}
+						}
+					}
 				}
-			}
 			else
 			{
 				cancelKeyChange.textColour = DEFAULTTEXTCOLOUR;
 			}
 
 			int tempKeyBindValue;
-			for (unordered_map<int, string>::iterator it = keyOutput.begin(); it != keyOutput.end(); ++it)
-			{
-				tempKeyBindValue = it->first;//The iterator moves through the list and the int value is stored.
-				for (int i = 0; i < NUMCONTROLS; ++i)
+				for (unordered_map<int, string>::iterator it = keyOutput.begin(); it != keyOutput.end(); ++it)
 				{
-					if (controlText[i].keyPress)
+					tempKeyBindValue = it->first;//The iterator moves through the list and the int value is stored.
+					//More secure check for determining what key is currently being changed.
+					//Previously without this it could result in one key being pressed and a different key being changed. 
+					for (int i = 0; i < numControls; ++i)
 					{
-						ChangeKeyBind(controlText[i], changeKeyMenu, mFrontEngine, tempKeyBindValue, it, gameControl[i]);
+						if (controlText[i].keyPress)
+						{
+							if (gameControl[i].keyBind != it->first)//Prevent a key being used for more than 1 control. 
+							{
+								ChangeKeyBind(controlText[i], changeKeyMenu, myEngine, tempKeyBindValue, it, gameControl[i], keyChanged);
+								gameControl[i].keyBindNumber = tempKeyBindValue;
+								//Only write to the player control file if a key has been changed.
+								//Previously the file would constantly be written to which caused performance issues. 
+								if (keyChanged)
+								{
+									SavePlayerControls(outfile, controlFile, gameControl, keyOutput, numControls, tempKeyBindValue);
+									keyChanged = false;
+								}
+							}
+						}
 					}
 				}
-			}
 		}
 	}
 }

@@ -84,11 +84,9 @@ void ReadControls(ifstream &infile, string &controlFile, string &defaultControlF
 		infile.close();
 		defaultControls = true;
 	}
-
 	if (defaultControls)
 	{
-		cout << "Default";
-		infile.open("Settings//" + defaultControlFile);
+		infile.open(defaultControlFile);
 	}
 	while (!infile.eof())
 	{
@@ -97,7 +95,8 @@ void ReadControls(ifstream &infile, string &controlFile, string &defaultControlF
 		tempNumber = std::stoi(tempString);
 		gameControl[controlCounter].keyBind = static_cast<EKeyCode>(tempNumber);//Each number in the file is cast into a key code enum value and then assigned to each key bind. 
 		controlText[controlCounter].text << gameControl[controlCounter].control << " = " << keyOutput[tempNumber];//This line allows changes to be made to the key code numbers in the control files.
-																												  //And still output the correct character on the change button menu rather than assigning them statically. 
+		//And still output the correct character on the change button menu rather than assigning them statically. 
+		gameControl[controlCounter].keyBindNumber = tempNumber;
 		controlCounter++;
 	}
 	infile.close();
@@ -256,8 +255,6 @@ void cGameFront::mMenu()
 	// MENUSPRITES
 	mMenuPanel = mFrontEngine->CreateSprite("Panel-2.png");
 	mMenuPanel->SetPosition((windowWidth / 2) - 150, 30);
-
-	//textData controlText[NUMCONTROLS];
 
 	ReadControls(infile, controlFile, defaultControls, gameControl, controlText, keyOutput);
 

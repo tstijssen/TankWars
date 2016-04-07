@@ -32,10 +32,22 @@ void cPlayer::mControlTank(I3DEngine* engine, float frameTime, gameControls cont
 {
 	float prevX = 0.0f;
 	float prevZ = 0.0f;
+	//New key press system 
+	bool moveForwardKeyPressed = false;
+	bool moveBackKeyPressed = false;
+	bool moveLeftKeyPressed = false;
+	bool moveRightKeyPressed = false;
+	bool fireKeyPressed = false;
+
+		moveForwardKeyPressed = (myEngine->KeyHeld(gameControl[0].keyBind));
+		moveBackKeyPressed = (myEngine->KeyHeld(gameControl[1].keyBind));
+		moveLeftKeyPressed = (myEngine->KeyHeld(gameControl[2].keyBind));
+		moveRightKeyPressed = (myEngine->KeyHeld(gameControl[3].keyBind));
+		fireKeyPressed = (myEngine->KeyHeld(gameControl[4].keyBind));
 
 	mPlayerTank->mRotateTurret(engine->GetMouseMovementX() * 20.0f, engine->GetMouseMovementY() * 20.0f, frameTime);
 
-	if (engine->KeyHit(controls[4].keyBind))
+	if (fireKeyPressed)
 	{
 		mPlayerTank->mShoot(frameTime);
 	}
@@ -45,21 +57,21 @@ void cPlayer::mControlTank(I3DEngine* engine, float frameTime, gameControls cont
 
 	mPlayerTank->mUpdate(frameTime);
 
-	if (engine->KeyHeld(controls[0].keyBind) || engine->KeyHeld(controls[1].keyBind) || engine->KeyHeld(controls[2].keyBind) || engine->KeyHeld(controls[3].keyBind))
+	if (moveForwardKeyPressed || moveBackKeyPressed || moveLeftKeyPressed || moveRightKeyPressed)
 	{
-		if (engine->KeyHeld(controls[0].keyBind))
+		if (moveForwardKeyPressed)
 		{
 			mPlayerTank->mMove(20.0f, 0.0f, frameTime);
 		}
-		if (engine->KeyHeld(controls[1].keyBind))
+		if (moveBackKeyPressed)
 		{
 			mPlayerTank->mMove(-20.0f, 0.0f, frameTime);
 		}
-		if (engine->KeyHeld(controls[2].keyBind))
+		if (moveLeftKeyPressed)
 		{
 			mPlayerTank->mMove(0.0f, -20.0f, frameTime);
 		}
-		if (engine->KeyHeld(controls[3].keyBind))
+		if (moveRightKeyPressed)
 		{
 			mPlayerTank->mMove(0.0f, 20.0f, frameTime);
 		}

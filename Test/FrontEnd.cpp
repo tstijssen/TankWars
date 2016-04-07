@@ -365,8 +365,6 @@ void cGameFront::mControls()
 	cancelKeyChange.xPos = 1000;
 	cancelKeyChange.yPos = 50;
 
-	string newKeyChar;
-
 	//X Positions
 	controlText[0].xPos = windowWidth / 2;
 	controlText[1].xPos = windowWidth / 2;

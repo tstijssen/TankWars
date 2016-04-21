@@ -39,12 +39,16 @@ void cPlayer::mControlTank(I3DEngine* engine, float frameTime, gameControls cont
 	bool moveLeftKeyPressed = false;
 	bool moveRightKeyPressed = false;
 	bool fireKeyPressed = false;
-
+	bool rotateTurretRightKeyPressed = false;
+	bool rotateTurretLeftKeyPressed = false;
+	
 	moveForwardKeyPressed = (engine->KeyHeld(controls[0].keyBind));
 	moveBackKeyPressed = (engine->KeyHeld(controls[1].keyBind));
 	moveLeftKeyPressed = (engine->KeyHeld(controls[2].keyBind));
 	moveRightKeyPressed = (engine->KeyHeld(controls[3].keyBind));
 	fireKeyPressed = (engine->KeyHeld(controls[4].keyBind));
+	rotateTurretRightKeyPressed = (engine->KeyHeld(gameControl[5].keyBind));
+	rotateTurretLeftKeyPressed = (engine->KeyHeld(gameControl[6].keyBind));
 
 	mPlayerTank->mRotateTurret(engine->GetMouseMovementX() * 20.0f, engine->GetMouseMovementY() * 20.0f, frameTime);
 
@@ -85,6 +89,14 @@ void cPlayer::mControlTank(I3DEngine* engine, float frameTime, gameControls cont
 	else
 	{
 		mPlayerTank->mStopEngine();
+	}
+	if (rotateTurretRightKeyPressed)
+	{
+		//code for rotating turret needs placing in here.	
+	}
+	if (rotateTurretRightKeyPressed)
+	{
+		//code for rotating turret needs placing in here.
 	}
 
 	if (mPlayerTank->mIsDestroyed())

@@ -143,10 +143,10 @@ void SetKeyCheckMap(unordered_map <int, string> &keyOutput)
 	keyOutput[34] = "Page Down";
 	keyOutput[35] = "End";
 	keyOutput[36] = "End";
-	keyOutput[37] = "Left";
-	keyOutput[38] = "Up";
-	keyOutput[39] = "Right";
-	keyOutput[40] = "Down";
+	keyOutput[37] = "Left Arrow";
+	keyOutput[38] = "Up Arrow";
+	keyOutput[39] = "Right Arrow";
+	keyOutput[40] = "Down Arrow";
 	keyOutput[41] = "Select";
 	keyOutput[42] = "Print";
 	keyOutput[44] = "Print Screen";

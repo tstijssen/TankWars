@@ -64,7 +64,7 @@ void ChangeKeyBind(textData &text, bool &changeKeyMenu, I3DEngine* &myEngine, in
 	}
 }
 
-void SavePlayerControls(ofstream &outfile, string playerControls, gameControls gameControl[], textData controlText[], unordered_map <int, string> &keyOutput, int numControls, int tempKeyBindValue)
+void SavePlayerControls(ofstream &outfile, string playerControls, gameControls gameControl[], unordered_map <int, string> &keyOutput, int numControls, int tempKeyBindValue)
 {
 	outfile.open(playerControls, ios::out);
 	if (outfile)
@@ -104,11 +104,9 @@ void ReadControls(ifstream &infile, string &controlFile, string &defaultControlF
 		infile.close();
 		defaultControls = true;
 	}
-
 	if (defaultControls)
 	{
-		cout << "Default";
-		infile.open("Settings//" + defaultControlFile);
+		infile.open(defaultControlFile);
 	}
 	while (!infile.eof())
 	{
@@ -117,7 +115,8 @@ void ReadControls(ifstream &infile, string &controlFile, string &defaultControlF
 		tempNumber = std::stoi(tempString);
 		gameControl[controlCounter].keyBind = static_cast<EKeyCode>(tempNumber);//Each number in the file is cast into a key code enum value and then assigned to each key bind. 
 		controlText[controlCounter].text << gameControl[controlCounter].control << " = " << keyOutput[tempNumber];//This line allows changes to be made to the key code numbers in the control files.
-																												  //And still output the correct character on the change button menu rather than assigning them statically. 
+		//And still output the correct character on the change button menu rather than assigning them statically. 
+		gameControl[controlCounter].keyBindNumber = tempNumber;
 		controlCounter++;
 	}
 	infile.close();

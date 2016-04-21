@@ -33,6 +33,18 @@ struct textData
 	bool keyPress = false;
 };
 
+struct soundTextData//Struct used for storing and displaying sound information. 
+{
+	//Give default values.
+	stringstream text;
+	unsigned int textColour = kRed;
+	int xPos = 0;
+	int yPos = 0;
+	bool keyPress = false;
+	float volume = 100;
+	stringstream volumeText;
+};
+
 class cGameFront
 {
 	ICamera* mMenuCamera;
@@ -57,7 +69,14 @@ class cGameFront
 	string tempString;
 	int controlCounter = 0;
 	textData controlText[NUMCONTROLS];
-
+	
+	//Sound data
+	textData ChangeSoundbuttonsLeft[3];
+	textData ChangeSoundbuttonsRight[3];
+	soundTextData MasterVolume;
+	soundTextData Music;
+	soundTextData SoundEffects;
+	
 	IFont* mMenuFont;
 	IFont* mTitleFont;
 public:

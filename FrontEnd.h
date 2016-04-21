@@ -15,7 +15,7 @@
 
 using namespace tle;
 
-const int NUMCONTROLS = 5;
+const int NUMCONTROLS = 7;
 
 struct optionMenuText
 {

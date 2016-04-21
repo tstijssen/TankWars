@@ -121,6 +121,136 @@ void ReadControls(ifstream &infile, string &controlFile, string &defaultControlF
 	}
 	infile.close();
 }
+void DrawSoundInfo()
+{
+	//SOUND TEXT HAS NO SHADOWS ATM.
+	//IF NEEDED THEN SIMPLY ADD FUNCTION CALLS FOR DRAWSHADOW FUNCTION.
+	MasterVolume.volumeText << MasterVolume.volume;
+	Music.volumeText << Music.volume;
+	SoundEffects.volumeText << SoundEffects.volume;
+
+	mMenuFont->Draw(MasterVolume.text.str(), MasterVolume.xPos, MasterVolume.yPos, MasterVolume.textColour, kCentre, kVCentre);
+	mMenuFont->Draw(SoundEffects.text.str(), SoundEffects.xPos, SoundEffects.yPos, SoundEffects.textColour, kCentre, kVCentre);
+	mMenuFont->Draw(Music.text.str(), Music.xPos, Music.yPos, Music.textColour, kCentre, kVCentre);
+
+	mMenuFont->Draw(MasterVolume.volumeText.str(), MasterVolume.xPos, MasterVolume.yPos + 20, MasterVolume.textColour, kCentre, kVCentre);
+	mMenuFont->Draw(SoundEffects.volumeText.str(), SoundEffects.xPos, SoundEffects.yPos + 20, SoundEffects.textColour, kCentre, kVCentre);
+	mMenuFont->Draw(Music.volumeText.str(), Music.xPos, Music.yPos + 20, Music.textColour, kCentre, kVCentre);
+
+	//Section to only write to the text variables once.
+	//Without this results in text constantly being written into variables and it will stretch across whole screen. 
+	MasterVolume.volumeText.str("");
+	Music.volumeText.str("");
+	SoundEffects.volumeText.str("");
+
+	MasterVolume.volumeText.clear();
+	Music.volumeText.clear();
+	SoundEffects.volumeText.clear();
+	for (int i = 0; i < 3; ++i)
+	{
+		mMenuFont->Draw(ChangeSoundbuttonsLeft[i].text.str(), ChangeSoundbuttonsLeft[i].xPos, ChangeSoundbuttonsLeft[i].yPos, ChangeSoundbuttonsLeft[i].textColour, kCentre, kVCentre);
+		mMenuFont->Draw(ChangeSoundbuttonsRight[i].text.str(), ChangeSoundbuttonsRight[i].xPos, ChangeSoundbuttonsRight[i].yPos, ChangeSoundbuttonsRight[i].textColour, kCentre, kVCentre);
+	}
+
+}
+
+void ChangeSoundLevels(int mouseXPosition, int mouseYPosition, bool &changeKeyMenu)
+{
+	int textWidth;
+	for (int i = 0; i<3; ++i)
+	{
+		textWidth = mMenuFont->MeasureTextWidth(ChangeSoundbuttonsLeft[i].text.str());
+		if (CheckButtonContact(mouseXPosition, mouseYPosition, ChangeSoundbuttonsLeft[i], textWidth, OPTIONMENUTEXTOFFSETX, OPTIONMENUTEXTOFFSETY) && changeKeyMenu == false)
+		{
+			ChangeSoundbuttonsLeft[i].textColour = kWhite;
+			if (mFrontEngine->KeyHeld(Mouse_LButton))
+			{
+
+				ChangeSoundbuttonsLeft[i].keyPress = true;
+				break;
+			}
+			if (ChangeSoundbuttonsLeft[0].keyPress)
+			{
+				//INSERT CORRECT CODE TO CHANGE APPROPRIATE SOUND VARIABLES 
+				if (MasterVolume.volume > 0)
+				{
+					MasterVolume.volume -= 5;
+				}
+				ChangeSoundbuttonsLeft[0].keyPress = false;
+			}
+			if (ChangeSoundbuttonsLeft[1].keyPress)
+			{//INSERT CORRECT CODE TO CHANGE APPROPRIATE SOUND VARIABLES 
+				if (Music.volume > 0)
+				{
+					Music.volume -= 5;
+				}
+				ChangeSoundbuttonsLeft[1].keyPress = false;
+			}
+			if (ChangeSoundbuttonsLeft[2].keyPress)
+			{//INSERT CORRECT CODE TO CHANGE APPROPRIATE SOUND VARIABLES 
+				if (SoundEffects.volume > 0)
+				{
+					SoundEffects.volume -= 5;
+				}
+				ChangeSoundbuttonsLeft[2].keyPress = false;
+			}
+
+		}
+		else
+		{
+			ChangeSoundbuttonsLeft[i].textColour = DEFAULTTEXTCOLOUR;
+		}
+
+		textWidth = mainFont->MeasureTextWidth(ChangeSoundbuttonsRight[i].text.str());
+		if (CheckButtonContact(mouseXPosition, mouseYPosition, ChangeSoundbuttonsRight[i], textWidth, OPTIONMENUTEXTOFFSETX, OPTIONMENUTEXTOFFSETY) && changeKeyMenu == false)
+		{
+			ChangeSoundbuttonsRight[i].textColour = kWhite;
+			if (mFrontEngine->KeyHeld(Mouse_LButton))
+			{
+
+				ChangeSoundbuttonsRight[i].keyPress = true;
+
+				break;
+			}
+			if (ChangeSoundbuttonsRight[0].keyPress)
+			{//INSERT CORRECT CODE TO CHANGE APPROPRIATE SOUND VARIABLES 
+				if (MasterVolume.volume < 100)
+				{
+					MasterVolume.volume += 5;
+				}
+
+				ChangeSoundbuttonsRight[0].keyPress = false;
+			}
+			if (ChangeSoundbuttonsRight[1].keyPress)
+			{//INSERT CORRECT CODE TO CHANGE APPROPRIATE SOUND VARIABLES 
+				if (Music.volume < 100)
+				{
+					Music.volume += 5;
+				}
+
+				ChangeSoundbuttonsRight[1].keyPress = false;
+			}
+			if (ChangeSoundbuttonsRight[2].keyPress)
+			{//INSERT CORRECT CODE TO CHANGE APPROPRIATE SOUND VARIABLES 
+				if (SoundEffects.volume < 100)
+				{
+					SoundEffects.volume += 5;
+				}
+
+				ChangeSoundbuttonsRight[2].keyPress = false;
+			}
+
+		}
+		else
+		{
+			ChangeSoundbuttonsRight[i].textColour = DEFAULTTEXTCOLOUR;
+		}
+	}
+}
+
+
+
+
 
 void SetKeyCheckMap(unordered_map <int, string> &keyOutput)
 {
@@ -400,6 +530,42 @@ void cGameFront::mControls()
 	cancelKeyChange.yPos = 250;
 
 	string newKeyChar;
+	
+	//SOUND DATA!!!!!!!!!\\\\\\\\\\\\\\\\\\\\\\\\\
+	//POSITION OF TEXT MAY NEED CHANGING.
+	MasterVolume.text << "Master Volume";
+	MasterVolume.xPos = 400;
+	MasterVolume.yPos = 220;
+	ChangeSoundbuttonsLeft[0].text << "<";
+	ChangeSoundbuttonsLeft[0].xPos = MasterVolume.xPos - 100;
+	ChangeSoundbuttonsLeft[0].yPos = MasterVolume.yPos;
+
+	ChangeSoundbuttonsRight[0].text << ">";
+	ChangeSoundbuttonsRight[0].xPos = mainFont->MeasureTextWidth(MasterVolume.text.str()) + 4 + MasterVolume.xPos;
+	ChangeSoundbuttonsRight[0].yPos = MasterVolume.yPos;
+
+	Music.text << "Music Volume";
+	Music.xPos = 400;
+	Music.yPos = 270;
+	ChangeSoundbuttonsLeft[1].text << "<";
+	ChangeSoundbuttonsLeft[1].xPos = Music.xPos - 100;
+	ChangeSoundbuttonsLeft[1].yPos = Music.yPos;
+
+	ChangeSoundbuttonsRight[1].text << ">";
+	ChangeSoundbuttonsRight[1].xPos = mainFont->MeasureTextWidth(Music.text.str()) + 4 + Music.xPos;
+	ChangeSoundbuttonsRight[1].yPos = Music.yPos;
+	
+	SoundEffects.text << "SFX Volume";
+	SoundEffects.xPos = 400;
+	SoundEffects.yPos = 320;
+
+	ChangeSoundbuttonsLeft[2].text << "<";
+	ChangeSoundbuttonsLeft[2].xPos = SoundEffects.xPos - 100;
+	ChangeSoundbuttonsLeft[2].yPos = SoundEffects.yPos;
+
+	ChangeSoundbuttonsRight[2].text << ">";
+	ChangeSoundbuttonsRight[2].xPos = mainFont->MeasureTextWidth(SoundEffects.text.str()) + 4 + SoundEffects.xPos;
+	ChangeSoundbuttonsRight[2].yPos = SoundEffects.yPos;
 
 
 	//X Positions
@@ -437,6 +603,8 @@ void cGameFront::mControls()
 			DrawShadow(controlText[i], mMenuFont);
 			mMenuFont->Draw(controlText[i].text.str(), controlText[i].xPos, controlText[i].yPos, controlText[i].textColour, kLeft, kVCentre);
 		}
+		DrawSoundInfo();//Outputs the sound information.
+		ChangeSoundLevels(mouseXPosition, mouseYPosition, changeKeyMenu);//Allow the user the change the sound levels. 
 		//Draw back button text seperately because its not part of an array.
 		DrawShadow(backText, mMenuFont);
 		mMenuFont->Draw(backText.text.str(), backText.xPos, backText.yPos, backText.textColour, kLeft, kVCentre);

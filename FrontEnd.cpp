@@ -280,8 +280,6 @@ void cGameFront::mMenu()
 	int textWidth;//Variable used in determining the toggle range of buttons/onscreen text.
 
 
-	//textData controlText[NUMCONTROLS];
-
 	ReadControls(infile, controlFile, defaultControls, gameControl, controlText, keyOutput);
 
 	// TEXT VALUES
@@ -410,12 +408,16 @@ void cGameFront::mControls()
 	controlText[2].xPos = (windowWidth / 2) - 230;
 	controlText[3].xPos = (windowWidth / 2) - 230;
 	controlText[4].xPos = (windowWidth / 2) - 230;
+	controlText[5].xPos = (windowWidth / 2) - 230;
+	controlText[6].xPos = (windowWidth / 2) - 230;
 	//Y Positions
 	controlText[0].yPos = 300;
 	controlText[1].yPos = 350;
 	controlText[2].yPos = 400;
 	controlText[3].yPos = 450;
 	controlText[4].yPos = 500;
+	controlText[5].yPos = 550; 
+	controlText[6].yPos = 600;
 
 	float frameTime;
 

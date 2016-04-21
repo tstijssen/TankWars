@@ -517,21 +517,17 @@ void cGameFront::mControls()
 				for (unordered_map<int, string>::iterator it = keyOutput.begin(); it != keyOutput.end(); ++it)
 				{
 					tempKeyBindValue = it->first;//The iterator moves through the list and the int value is stored.
-					//More secure check for determining what key is currently being changed.
-					//Previously without this it could result in one key being pressed and a different key being changed. 
 					for (int i = 0; i < NUMCONTROLS; ++i)
 					{
 						if (controlText[i].keyPress)
 						{
-							if (gameControl[i].keyBind != it->first)//Prevent a key being used for more than 1 control. 
+							if (gameControl[i].keyBind != it->first)
 							{
-								ChangeKeyBind(controlText[i], changeKeyMenu, mFrontEngine, tempKeyBindValue, it, gameControl[i], keyChanged);
+								ChangeKeyBind(controlText[i], changeKeyMenu, myEngine, tempKeyBindValue, it, gameControl[i], keyChanged);
 								gameControl[i].keyBindNumber = tempKeyBindValue;
-								//Only write to the player control file if a key has been changed.
-								//Previously the file would constantly be written to which caused performance issues. 
 								if (keyChanged)
 								{
-									SavePlayerControls(outfile, controlFile, gameControl, controlText, keyOutput, NUMCONTROLS, tempKeyBindValue);
+									SavePlayerControls(outfile, controlFile, gameControl, keyOutput, numControls, tempKeyBindValue);
 									keyChanged = false;
 								}
 							}

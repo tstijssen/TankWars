@@ -48,7 +48,7 @@ class cGameFront
 	cSoundEffect* mButtonPress;
 
 	unordered_map <int, string> keyOutput;
-	gameControls gameControl[5];
+	gameControls gameControl[NUMCONTROLS];
 	ifstream infile;
 	string controlFile = "controls.txt";
 	string defaultControls = "defaultcontrols.txt";
